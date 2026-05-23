@@ -16,7 +16,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 liquid-glass">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-border/30 bg-background/80 backdrop-blur-xl shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2.5 font-bold text-lg">
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground glow-primary">
@@ -31,7 +31,7 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               className={cn(
-                "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors hover:text-primary hover:bg-accent",
+                "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors hover:text-primary hover:bg-accent outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                 pathname === link.href ? "text-primary bg-accent" : "text-muted-foreground"
               )}
             >
@@ -71,7 +71,7 @@ export function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-border/40 px-4 py-4 space-y-1 liquid-glass">
+        <div className="md:hidden border-t border-border/20 px-4 py-4 space-y-1 bg-background/95 backdrop-blur-xl">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}

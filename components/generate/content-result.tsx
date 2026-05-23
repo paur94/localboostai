@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, RefreshCw, Download } from "lucide-react";
+import Image from "next/image";
+import { Copy, Check, RefreshCw, Download, ImageOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,12 +12,14 @@ import { toast } from "@/hooks/use-toast";
 interface ContentResultProps {
   content: string | null;
   isGenerating: boolean;
+  imageUrl?: string | null;
+  isGeneratingImage?: boolean;
   contentType?: string;
   platform?: string;
   onRegenerate?: () => void;
 }
 
-export function ContentResult({ content, isGenerating, contentType, platform, onRegenerate }: ContentResultProps) {
+export function ContentResult({ content, isGenerating, imageUrl, isGeneratingImage, contentType, platform, onRegenerate }: ContentResultProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -75,6 +78,43 @@ export function ContentResult({ content, isGenerating, contentType, platform, on
           </div>
         )}
       </CardContent>
+
+      {(isGeneratingImage || imageUrl) && (
+        <CardContent className="pt-0">
+          <div className="rounded-md overflow-hidden border">
+            {isGeneratingImage ? (
+              <Skeleton className="w-full aspect-square" />
+            ) : imageUrl ? (
+              <div className="relative w-full aspect-square">
+                <Image
+                  src={imageUrl}
+                  alt="Generated marketing image"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            ) : null}
+          </div>
+          {imageUrl && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="mt-2 w-full"
+              onClick={() => {
+                const a = document.createElement("a");
+                a.href = imageUrl;
+                a.download = `localboost-image-${Date.now()}.png`;
+                a.target = "_blank";
+                a.click();
+              }}
+            >
+              <Download className="mr-2 h-3.5 w-3.5" />
+              Download Image
+            </Button>
+          )}
+        </CardContent>
+      )}
 
       {!isGenerating && content && (
         <CardFooter className="gap-2">

@@ -36,7 +36,7 @@ export default function PricingPage() {
 
       <main className="flex-1">
         {/* Header */}
-        <section className="py-20 text-center bg-background">
+        <section className="pt-28 pb-20 text-center bg-background">
           <div className="container mx-auto px-4">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
               Simple, transparent pricing

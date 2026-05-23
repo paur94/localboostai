@@ -23,6 +23,7 @@ export interface ContentFormData {
   businessDescription: string;
   tone: "professional" | "casual" | "friendly" | "humorous" | "urgent";
   additionalContext?: string;
+  generateImage?: boolean;
 }
 
 export interface GenerateContentResult {

@@ -1,9 +1,15 @@
 "use server";
 
+import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 import { createServerClient } from "@/lib/supabase/server";
 import { GENERATION_LIMITS } from "@/lib/constants";
 import type { ContentFormData, GenerateContentResult } from "@/types";
+
+const anthropic = new Anthropic();
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 function buildPrompt(data: ContentFormData): string {
   const platformMap: Record<string, string> = {
@@ -44,50 +50,25 @@ Requirements:
 Return ONLY the content, no explanations or meta-commentary.`;
 }
 
-function generateMockContent(data: ContentFormData): string {
-  const templates: Record<string, string> = {
-    social_post: `✨ ${data.businessName} is here to elevate your experience!
+async function generateLiveContent(data: ContentFormData): Promise<{ content: string; tokensUsed: number }> {
+  const response = await anthropic.messages.create({
+    model: "claude-haiku-4-5",
+    max_tokens: 1024,
+    system: [
+      {
+        type: "text",
+        text: "You are an expert marketing copywriter for local businesses. Return ONLY the requested content with no explanations or meta-commentary.",
+        cache_control: { type: "ephemeral" },
+      },
+    ],
+    messages: [{ role: "user", content: buildPrompt(data) }],
+  });
 
-${data.businessDescription.slice(0, 100)}...
+  const textBlock = response.content.find((b) => b.type === "text");
+  const content = textBlock?.type === "text" ? textBlock.text : "";
+  const tokensUsed = response.usage.input_tokens + response.usage.output_tokens;
 
-Ready to discover something amazing? Visit us today and see why our community loves us! 🌟
-
-#LocalBusiness #${data.businessName.replace(/\s/g, "")} #Community`,
-    blog_intro: `If you're looking for ${data.businessDescription.slice(0, 60).toLowerCase()}, look no further than ${data.businessName}.
-
-Nestled in the heart of our community, ${data.businessName} has been delivering exceptional experiences that keep customers coming back. But what makes us truly special isn't just what we offer — it's how we offer it.
-
-In this post, we'll take you behind the scenes of ${data.businessName} and show you exactly why we've become a local favorite.`,
-    email: `Subject: Something Special from ${data.businessName} Just for You 🎉
-
-Hi there,
-
-We have some exciting news to share from ${data.businessName}!
-
-${data.businessDescription.slice(0, 150)}
-
-We believe every customer deserves the very best, which is why we're constantly working to bring you even more value.
-
-Ready to experience it for yourself? Visit us or reach out today — we'd love to see you!
-
-Warm regards,
-The ${data.businessName} Team`,
-    ad_copy: `HEADLINE: ${data.businessName} — Quality You Can Count On
-
-${data.businessDescription.slice(0, 120)}
-
-✅ Local & trusted
-✅ Exceptional quality
-✅ Community focused
-
-👉 Don't wait — discover ${data.businessName} today!`,
-    product_description: `Discover what ${data.businessName} has to offer. ${data.businessDescription}
-
-Our commitment to quality and customer satisfaction sets us apart. Whether you're a first-time visitor or a loyal customer, we deliver an experience that keeps you coming back.`,
-    seo_description: `${data.businessName} — ${data.businessDescription.slice(0, 90)}. Trusted by the local community. Visit us today!`,
-  };
-
-  return templates[data.contentType] ?? templates.social_post;
+  return { content, tokensUsed };
 }
 
 export async function generateContent(
@@ -123,8 +104,7 @@ export async function generateContent(
     }
   }
 
-  const content = generateMockContent(data);
-  const tokensUsed = Math.floor(content.length / 4);
+  const { content, tokensUsed } = await generateLiveContent(data);
 
   await supabase.from("content_generations").insert({
     user_id: userId,
@@ -135,6 +115,8 @@ export async function generateContent(
     result: content,
     tokens_used: tokensUsed,
   });
+
+  revalidatePath("/dashboard");
 
   return { content, tokensUsed };
 }
@@ -152,4 +134,45 @@ export async function deleteGeneration(id: string): Promise<{ error?: string }> 
 
   if (error) return { error: error.message };
   return {};
+}
+
+export async function generateImage(
+  data: ContentFormData
+): Promise<{ imageUrl?: string; error?: string }> {
+  const { userId } = await auth();
+  if (!userId) return { error: "Unauthorized" };
+
+  const platformStyle: Record<string, string> = {
+    instagram: "vibrant, eye-catching, square-format social media style",
+    facebook: "warm, community-focused, engaging",
+    twitter: "bold, punchy, modern",
+    linkedin: "professional, clean, corporate",
+    google: "local business, friendly, trustworthy",
+    general: "versatile, professional, modern",
+  };
+
+  const prompt = `A high-quality marketing image for "${data.businessName}", a local business: ${data.businessDescription}. ${platformStyle[data.platform] ?? "professional"} style, ${data.tone} mood. No text overlays. Photorealistic.`;
+
+  let response;
+  try {
+    response = await openai.images.generate({
+      model: "gpt-image-2",
+      prompt,
+      n: 1,
+      size: "1024x1024",
+      quality: "high",
+    });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (msg.includes("Billing hard limit")) {
+      return { error: "Image generation is temporarily unavailable. Please try again later." };
+    }
+    return { error: "Failed to generate image. Please try again." };
+  }
+
+  const b64 = response.data?.[0]?.b64_json;
+  if (!b64) return { error: "No image returned from OpenAI." };
+
+  const imageUrl = `data:image/png;base64,${b64}`;
+  return { imageUrl };
 }

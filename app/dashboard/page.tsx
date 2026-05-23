@@ -33,6 +33,21 @@ export default async function DashboardPage() {
     ]);
 
     dbUser = userRes.data;
+
+    // Auto-sync: if the user doesn't exist in Supabase yet (webhook not fired), create them now
+    if (!dbUser && clerkUser) {
+      const email = clerkUser.emailAddresses[0]?.emailAddress ?? "";
+      const name = clerkUser.fullName ?? clerkUser.firstName ?? null;
+      const { data: newUser } = await supabase
+        .from("users")
+        .upsert(
+          { id: userId, email, name, image_url: clerkUser.imageUrl ?? null, subscription_tier: "free" },
+          { onConflict: "id" }
+        )
+        .select()
+        .single();
+      dbUser = newUser;
+    }
     recentGenerations = generationsRes.data ?? [];
 
     const startOfMonth = new Date();

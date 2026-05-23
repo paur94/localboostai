@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles, Loader2 } from "lucide-react";
+import { Sparkles, Loader2, ImagePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -30,6 +31,7 @@ export function ContentForm({ onGenerate, isGenerating }: ContentFormProps) {
     businessDescription: "",
     tone: "professional",
     additionalContext: "",
+    generateImage: false,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -134,6 +136,20 @@ export function ContentForm({ onGenerate, isGenerating }: ContentFormProps) {
               value={form.additionalContext}
               onChange={(e) => setForm((p) => ({ ...p, additionalContext: e.target.value }))}
               className="min-h-[80px]"
+            />
+          </div>
+
+          <div className="flex items-center justify-between rounded-lg border px-4 py-3">
+            <div className="flex items-center gap-2">
+              <ImagePlus className="h-4 w-4 text-muted-foreground" />
+              <Label htmlFor="generateImage" className="cursor-pointer text-sm font-medium">
+                Also generate an image
+              </Label>
+            </div>
+            <Switch
+              id="generateImage"
+              checked={form.generateImage ?? false}
+              onCheckedChange={(checked) => setForm((p) => ({ ...p, generateImage: checked }))}
             />
           </div>
 

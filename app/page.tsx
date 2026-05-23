@@ -83,7 +83,7 @@ const testimonials = [
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col overflow-x-hidden">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
 
       {/* Hero */}
