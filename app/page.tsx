@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
@@ -19,21 +18,33 @@ const features = [
     icon: Sparkles,
     title: "AI-Powered Content",
     description: "Generate compelling marketing copy tailored to your business in seconds, not hours.",
+    color: "from-blue-500/20 to-indigo-500/10",
+    iconColor: "text-blue-500",
+    iconBg: "bg-blue-500/10",
   },
   {
     icon: Target,
     title: "Platform Optimized",
     description: "Content optimized for Instagram, Facebook, LinkedIn, Twitter, and Google Business.",
+    color: "from-purple-500/20 to-pink-500/10",
+    iconColor: "text-purple-500",
+    iconBg: "bg-purple-500/10",
   },
   {
     icon: Zap,
     title: "Lightning Fast",
     description: "Stop spending hours writing. Get professional content instantly and focus on what matters.",
+    color: "from-amber-500/20 to-orange-500/10",
+    iconColor: "text-amber-500",
+    iconBg: "bg-amber-500/10",
   },
   {
     icon: BarChart3,
     title: "Track Performance",
     description: "Monitor your content generation history and track usage across campaigns.",
+    color: "from-emerald-500/20 to-teal-500/10",
+    iconColor: "text-emerald-500",
+    iconBg: "bg-emerald-500/10",
   },
 ];
 
@@ -52,126 +63,186 @@ const testimonials = [
     role: "Owner, Fresh Bites Café",
     content: "LocalBoost AI has transformed our social media presence. We went from posting once a week to daily, and our engagement tripled!",
     rating: 5,
+    avatar: "SJ",
   },
   {
     name: "Mike Chen",
     role: "Manager, Downtown Auto Repair",
     content: "I used to spend 3 hours a week writing content. Now it takes 15 minutes. The quality is consistently excellent.",
     rating: 5,
+    avatar: "MC",
   },
   {
     name: "Lisa Martinez",
     role: "Director, Bloom Flower Studio",
     content: "Finally an AI tool that understands local businesses. The content feels authentic, not generic.",
     rating: 5,
+    avatar: "LM",
   },
 ];
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col overflow-x-hidden">
       <Navbar />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-background pt-20 pb-28">
-        <div
-          className="absolute inset-0 -z-10 opacity-15"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 80% at 50% -20%, var(--color-primary), transparent)",
-          }}
-        />
-        <div className="container mx-auto px-4 text-center">
-          <Badge variant="secondary" className="mb-6 text-primary border-primary/20">
-            <Sparkles className="mr-1 h-3 w-3" />
-            AI-Powered for Local Businesses
-          </Badge>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+      <section className="relative overflow-hidden mesh-bg min-h-[90vh] flex items-center pt-16">
+        {/* Floating orbs */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div
+            className="absolute -top-32 -left-32 h-125 w-125 rounded-full animate-float"
+            style={{
+              background: "radial-gradient(circle, oklch(0.529 0.194 256.8 / 20%), transparent 70%)",
+              animationDelay: "0s",
+            }}
+          />
+          <div
+            className="absolute top-1/3 -right-48 h-150 w-150 rounded-full animate-float"
+            style={{
+              background: "radial-gradient(circle, oklch(0.65 0.18 300 / 15%), transparent 70%)",
+              animationDelay: "2s",
+            }}
+          />
+          <div
+            className="absolute -bottom-40 left-1/3 h-100 w-100 rounded-full animate-float"
+            style={{
+              background: "radial-gradient(circle, oklch(0.60 0.16 200 / 15%), transparent 70%)",
+              animationDelay: "4s",
+            }}
+          />
+        </div>
+
+        <div className="container relative mx-auto px-4 py-24 text-center">
+          <div className="inline-block mb-6">
+            <span className="liquid-glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-primary">
+              <Sparkles className="h-3.5 w-3.5" />
+              AI-Powered for Local Businesses
+            </span>
+          </div>
+
+          <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl xl:text-8xl">
             Stop Writing.
             <br />
-            <span className="text-primary">Start Growing.</span>
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage: "linear-gradient(135deg, oklch(0.529 0.194 256.8), oklch(0.65 0.18 300), oklch(0.60 0.16 200))",
+              }}
+            >
+              Start Growing.
+            </span>
           </h1>
-          <p className="mt-6 mx-auto max-w-2xl text-lg text-muted-foreground">
+
+          <p className="mt-6 mx-auto max-w-2xl text-lg text-muted-foreground leading-relaxed">
             Generate professional marketing content for your local business in seconds. Social posts,
             emails, ads — all tailored to your brand and audience.
           </p>
+
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="min-w-45">
+            <Button asChild size="lg" className="min-w-48 glow-primary rounded-xl h-12 text-base font-semibold">
               <Link href="/sign-up">
                 Start Free Today
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="min-w-45">
+            <Button asChild variant="outline" size="lg" className="min-w-48 liquid-glass rounded-xl h-12 text-base font-semibold border-0">
               <Link href="/pricing">View Pricing</Link>
             </Button>
           </div>
-          <p className="mt-4 text-sm text-muted-foreground">
+
+          <p className="mt-5 text-sm text-muted-foreground">
             Free plan available · No credit card required
           </p>
+
+          {/* Floating stat pills */}
+          <div className="mt-16 flex flex-wrap items-center justify-center gap-3">
+            {[
+              { label: "10K+ businesses", color: "text-blue-600 dark:text-blue-400" },
+              { label: "500K+ posts generated", color: "text-purple-600 dark:text-purple-400" },
+              { label: "4.9★ rating", color: "text-amber-600 dark:text-amber-400" },
+            ].map(({ label, color }) => (
+              <span key={label} className={`liquid-glass rounded-full px-4 py-1.5 text-sm font-semibold ${color}`}>
+                {label}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Content Types */}
-      <section className="border-y bg-muted/30 py-8">
+      <section className="border-y border-border/40 bg-muted/20 py-6 backdrop-blur">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-center gap-3">
             <span className="text-sm font-medium text-muted-foreground mr-2">Generate:</span>
             {contentTypes.map((type) => (
-              <Badge key={type} variant="outline" className="text-sm">
+              <span key={type} className="liquid-glass rounded-full px-3 py-1 text-sm font-medium text-foreground/70">
                 {type}
-              </Badge>
+              </span>
             ))}
           </div>
         </div>
       </section>
 
       {/* Features */}
-      <section className="py-24 bg-background">
+      <section className="py-28 relative overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 100%, oklch(0.529 0.194 256.8 / 8%), transparent)",
+          }}
+        />
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold sm:text-4xl">
+            <Badge variant="secondary" className="mb-4">Features</Badge>
+            <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
               Everything your local business needs
             </h2>
-            <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
+            <p className="mt-4 text-muted-foreground max-w-xl mx-auto text-lg">
               Built specifically for local businesses — restaurants, retail, services, and more.
             </p>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map(({ icon: Icon, title, description }) => (
-              <Card key={title} className="border-border/50 hover:border-primary/50 transition-colors">
-                <CardContent className="p-6">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 mb-4">
-                    <Icon className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">{title}</h3>
-                  <p className="text-sm text-muted-foreground">{description}</p>
-                </CardContent>
-              </Card>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {features.map(({ icon: Icon, title, description, color, iconColor, iconBg }) => (
+              <div
+                key={title}
+                className={`liquid-glass rounded-2xl p-6 bg-linear-to-br ${color} transition-all duration-300 hover:scale-[1.02] hover:shadow-lg`}
+              >
+                <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${iconBg} mb-4`}>
+                  <Icon className={`h-5 w-5 ${iconColor}`} />
+                </div>
+                <h3 className="font-semibold text-lg mb-2">{title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* How it works */}
-      <section className="py-24 bg-muted/30">
+      <section className="py-28 mesh-bg">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold sm:text-4xl">How it works</h2>
-            <p className="mt-4 text-muted-foreground">Three steps to professional content</p>
+            <Badge variant="secondary" className="mb-4">How it works</Badge>
+            <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl">Three steps to professional content</h2>
           </div>
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3 max-w-4xl mx-auto">
             {[
-              { step: "01", title: "Describe your business", desc: "Tell us about your business, the content type, and your target platform." },
-              { step: "02", title: "AI generates content", desc: "Our AI creates tailored content optimized for your platform and audience." },
-              { step: "03", title: "Copy and publish", desc: "Review, copy, and publish your content. Done in under 30 seconds." },
-            ].map(({ step, title, desc }) => (
-              <div key={step} className="text-center">
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-lg">
-                  {step}
+              { step: "01", title: "Describe your business", desc: "Tell us about your business, the content type, and your target platform.", color: "from-blue-500/20 to-indigo-500/10" },
+              { step: "02", title: "AI generates content", desc: "Our AI creates tailored content optimized for your platform and audience.", color: "from-purple-500/20 to-pink-500/10" },
+              { step: "03", title: "Copy and publish", desc: "Review, copy, and publish your content. Done in under 30 seconds.", color: "from-emerald-500/20 to-teal-500/10" },
+            ].map(({ step, title, desc, color }, i) => (
+              <div key={step} className="relative text-center">
+                {i < 2 && (
+                  <div className="hidden md:block absolute top-8 left-[calc(50%+2.5rem)] w-[calc(100%-5rem)] h-px border-t-2 border-dashed border-primary/20" />
+                )}
+                <div className={`liquid-glass rounded-2xl p-6 bg-linear-to-br ${color}`}>
+                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary font-bold text-lg">
+                    {step}
+                  </div>
+                  <h3 className="font-semibold text-lg mb-2">{title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
                 </div>
-                <h3 className="font-semibold text-lg mb-2">{title}</h3>
-                <p className="text-sm text-muted-foreground">{desc}</p>
               </div>
             ))}
           </div>
@@ -179,64 +250,78 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 bg-background">
+      <section className="py-28 bg-background relative overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 0%, oklch(0.529 0.194 256.8 / 6%), transparent)",
+          }}
+        />
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold sm:text-4xl">Loved by local businesses</h2>
+            <Badge variant="secondary" className="mb-4">Testimonials</Badge>
+            <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl">Loved by local businesses</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
-            {testimonials.map(({ name, role, content, rating }) => (
-              <Card key={name}>
-                <CardContent className="p-6">
-                  <div className="flex mb-3">
-                    {Array.from({ length: rating }).map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-primary text-primary" />
-                    ))}
+            {testimonials.map(({ name, role, content, rating, avatar }) => (
+              <div key={name} className="liquid-glass rounded-2xl p-6 transition-all duration-300 hover:scale-[1.01]">
+                <div className="flex mb-3 gap-0.5">
+                  {Array.from({ length: rating }).map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="text-sm text-muted-foreground mb-5 leading-relaxed">&ldquo;{content}&rdquo;</p>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-xs">
+                    {avatar}
                   </div>
-                  <p className="text-sm text-muted-foreground mb-4">&ldquo;{content}&rdquo;</p>
                   <div>
                     <p className="font-semibold text-sm">{name}</p>
                     <p className="text-xs text-muted-foreground">{role}</p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold sm:text-4xl mb-4">
-            Ready to boost your local business?
-          </h2>
-          <p className="text-primary-foreground/80 mb-8 max-w-lg mx-auto">
-            Join thousands of local businesses generating professional content with AI.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" variant="secondary">
-              <Link href="/sign-up">
-                Get Started Free
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-primary-foreground/30 hover:bg-primary-foreground/10 text-primary-foreground"
-            >
-              <Link href="/pricing">See Pricing</Link>
-            </Button>
-          </div>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-primary-foreground/70">
-            {["Free plan available", "No credit card required", "Cancel anytime"].map((item) => (
-              <span key={item} className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-4 w-4" />
-                {item}
-              </span>
-            ))}
+      <section className="py-28 relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 mesh-bg" />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: "radial-gradient(ellipse 80% 80% at 50% 50%, oklch(0.529 0.194 256.8 / 12%), transparent)",
+          }}
+        />
+        <div className="container relative mx-auto px-4 text-center">
+          <div className="liquid-glass-strong mx-auto max-w-2xl rounded-3xl p-12">
+            <h2 className="text-3xl font-bold sm:text-4xl mb-4">
+              Ready to boost your local business?
+            </h2>
+            <p className="text-muted-foreground mb-8 max-w-lg mx-auto text-lg">
+              Join thousands of local businesses generating professional content with AI.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button asChild size="lg" className="min-w-44 glow-primary rounded-xl h-12 text-base font-semibold">
+                <Link href="/sign-up">
+                  Get Started Free
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="min-w-44 liquid-glass rounded-xl h-12 text-base font-semibold border-0">
+                <Link href="/pricing">See Pricing</Link>
+              </Button>
+            </div>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
+              {["Free plan available", "No credit card required", "Cancel anytime"].map((item) => (
+                <span key={item} className="flex items-center gap-1.5">
+                  <CheckCircle2 className="h-4 w-4 text-primary" />
+                  {item}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </section>

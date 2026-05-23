@@ -5,12 +5,12 @@ import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden mesh-bg">
       <Sidebar />
 
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Top bar */}
-        <header className="flex h-16 shrink-0 items-center justify-end gap-3 border-b px-6">
+        <header className="flex h-16 shrink-0 items-center justify-end gap-3 border-b border-border/40 px-6 liquid-glass">
           <ThemeToggle />
           <UserButton />
         </header>

@@ -5,8 +5,6 @@ import { createServerClient } from "@/lib/supabase/server";
 import { StatsCard } from "@/components/dashboard/stats-card";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { QuickActions } from "@/components/dashboard/quick-actions";
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GENERATION_LIMITS } from "@/lib/constants";
 import type { ContentGeneration, User } from "@/types/database";
@@ -67,7 +65,7 @@ export default async function DashboardPage() {
         <h1 className="text-2xl font-bold tracking-tight">
           Welcome back, {displayName} 👋
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground mt-1">
           Here&apos;s an overview of your content generation activity.
         </p>
       </div>
@@ -80,43 +78,52 @@ export default async function DashboardPage() {
           description={`of ${isFinite(limit) ? limit : "∞"} included`}
           icon={FileText}
           trend={generationsThisMonth > 0 ? { value: 12, positive: true } : undefined}
+          accent="from-blue-500/15 to-indigo-500/5"
         />
         <StatsCard
           title="Remaining Credits"
           value={remaining !== null ? remaining : "∞"}
           description={remaining !== null ? "credits left this month" : "Unlimited plan"}
           icon={Wallet}
+          accent="from-purple-500/15 to-pink-500/5"
         />
         <StatsCard
           title="Subscription Plan"
           value={planLabel}
           description="Current subscription"
           icon={Zap}
+          accent="from-amber-500/15 to-orange-500/5"
         />
       </div>
 
       {/* Usage bar */}
       {isFinite(limit) && (
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-medium">Monthly Usage</CardTitle>
-              <Badge variant={usagePercent >= 80 ? "destructive" : "secondary"}>
-                {generationsThisMonth} / {limit}
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Progress value={usagePercent} className="h-2" />
-            <p className="mt-2 text-xs text-muted-foreground">
-              {remaining} generations remaining this month
-            </p>
-          </CardContent>
-        </Card>
+        <div className="liquid-glass rounded-2xl p-6">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-sm font-semibold">Monthly Usage</p>
+            <Badge variant={usagePercent >= 80 ? "destructive" : "secondary"} className="rounded-full text-xs">
+              {generationsThisMonth} / {limit}
+            </Badge>
+          </div>
+          <div className="h-2.5 w-full rounded-full bg-muted overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-700"
+              style={{
+                width: `${usagePercent}%`,
+                background: usagePercent >= 80
+                  ? "oklch(0.577 0.245 27.325)"
+                  : "linear-gradient(90deg, oklch(0.529 0.194 256.8), oklch(0.65 0.18 300))",
+              }}
+            />
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            {remaining} generations remaining this month
+          </p>
+        </div>
       )}
 
       {/* Lower grid */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-5 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <RecentActivity items={recentGenerations} />
         </div>

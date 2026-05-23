@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
-import { Sparkles, Menu, X } from "lucide-react";
+import { Zap, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
@@ -16,23 +16,23 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 liquid-glass">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Sparkles className="h-4 w-4" />
+        <Link href="/" className="flex items-center gap-2.5 font-bold text-lg">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground glow-primary">
+            <Zap className="h-4 w-4" />
           </div>
-          <span>{APP_NAME}</span>
+          <span className="tracking-tight">{APP_NAME}</span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-1">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
-                pathname === link.href ? "text-primary" : "text-muted-foreground"
+                "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors hover:text-primary hover:bg-accent",
+                pathname === link.href ? "text-primary bg-accent" : "text-muted-foreground"
               )}
             >
               {link.label}
@@ -40,11 +40,11 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2">
           <ThemeToggle />
           {isSignedIn ? (
             <>
-              <Button asChild size="sm">
+              <Button asChild size="sm" className="rounded-xl">
                 <Link href="/dashboard">Dashboard</Link>
               </Button>
               <UserButton />
@@ -52,17 +52,17 @@ export function Navbar() {
           ) : (
             <>
               <SignInButton mode="modal">
-                <Button variant="ghost" size="sm">Sign In</Button>
+                <Button variant="ghost" size="sm" className="rounded-xl">Sign In</Button>
               </SignInButton>
               <SignUpButton mode="modal">
-                <Button size="sm">Get Started</Button>
+                <Button size="sm" className="rounded-xl glow-primary">Get Started</Button>
               </SignUpButton>
             </>
           )}
         </div>
 
         <button
-          className="md:hidden p-2"
+          className="md:hidden rounded-lg p-2 hover:bg-accent transition-colors"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -71,30 +71,30 @@ export function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t bg-background px-4 py-4 space-y-3">
+        <div className="md:hidden border-t border-border/40 px-4 py-4 space-y-1 liquid-glass">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setMobileOpen(false)}
-              className="block text-sm font-medium text-muted-foreground hover:text-primary"
+              className="block rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-accent transition-colors"
             >
               {link.label}
             </Link>
           ))}
-          <div className="flex items-center gap-3 pt-2 border-t">
+          <div className="flex items-center gap-2 pt-3 border-t border-border/40 mt-3">
             <ThemeToggle />
             {isSignedIn ? (
-              <Button asChild size="sm" className="flex-1">
+              <Button asChild size="sm" className="flex-1 rounded-xl">
                 <Link href="/dashboard">Dashboard</Link>
               </Button>
             ) : (
               <>
                 <SignInButton mode="modal">
-                  <Button variant="outline" size="sm" className="flex-1">Sign In</Button>
+                  <Button variant="outline" size="sm" className="flex-1 rounded-xl">Sign In</Button>
                 </SignInButton>
                 <SignUpButton mode="modal">
-                  <Button size="sm" className="flex-1">Get Started</Button>
+                  <Button size="sm" className="flex-1 rounded-xl">Get Started</Button>
                 </SignUpButton>
               </>
             )}

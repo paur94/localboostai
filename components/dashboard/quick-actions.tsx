@@ -1,31 +1,42 @@
 import Link from "next/link";
 import { Sparkles, History, Settings, CreditCard } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 const actions = [
-  { href: "/dashboard/generate", label: "Generate Content", icon: Sparkles,   variant: "default"  as const },
-  { href: "/dashboard/history",  label: "View History",    icon: History,    variant: "outline" as const },
-  { href: "/dashboard/billing",  label: "Billing",         icon: CreditCard, variant: "outline" as const },
-  { href: "/dashboard/settings", label: "Settings",        icon: Settings,   variant: "outline" as const },
+  { href: "/dashboard/generate", label: "Generate",  icon: Sparkles,   color: "from-blue-500/20 to-indigo-500/10 hover:from-blue-500/30",   iconColor: "text-blue-500" },
+  { href: "/dashboard/history",  label: "History",   icon: History,    color: "from-purple-500/20 to-pink-500/10 hover:from-purple-500/30",  iconColor: "text-purple-500" },
+  { href: "/dashboard/billing",  label: "Billing",   icon: CreditCard, color: "from-amber-500/20 to-orange-500/10 hover:from-amber-500/30",  iconColor: "text-amber-500" },
+  { href: "/dashboard/settings", label: "Settings",  icon: Settings,   color: "from-emerald-500/20 to-teal-500/10 hover:from-emerald-500/30", iconColor: "text-emerald-500" },
 ];
 
 export function QuickActions() {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-base">Quick Actions</CardTitle>
-      </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-2">
-        {actions.map(({ href, label, icon: Icon, variant }) => (
-          <Button key={href} asChild variant={variant} size="sm" className="h-auto py-3 flex-col gap-1.5">
-            <Link href={href}>
-              <Icon className="h-4 w-4" />
-              <span className="text-xs">{label}</span>
-            </Link>
-          </Button>
+    <div className="liquid-glass rounded-2xl p-6">
+      <h3 className="text-base font-semibold mb-4">Quick Actions</h3>
+      <div className="grid grid-cols-2 gap-2">
+        {actions.map(({ href, label, icon: Icon, color, iconColor }) => (
+          <Link
+            key={href}
+            href={href}
+            className={`liquid-glass rounded-xl p-3 flex flex-col items-center gap-2 bg-linear-to-br ${color} transition-all duration-200 hover:scale-[1.03]`}
+          >
+            <Icon className={`h-5 w-5 ${iconColor}`} />
+            <span className="text-xs font-semibold">{label}</span>
+          </Link>
         ))}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
+  );
+}
+
+export function QuickActionsSkeleton() {
+  return (
+    <div className="liquid-glass rounded-2xl p-6 space-y-4">
+      <div className="h-5 w-28 rounded-full skeleton-shimmer" />
+      <div className="grid grid-cols-2 gap-2">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="h-16 rounded-xl skeleton-shimmer" />
+        ))}
+      </div>
+    </div>
   );
 }

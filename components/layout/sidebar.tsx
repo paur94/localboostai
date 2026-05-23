@@ -9,6 +9,7 @@ import {
   Settings,
   CreditCard,
   Zap,
+  ArrowUpRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { APP_NAME } from "@/lib/constants";
@@ -26,16 +27,17 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden md:flex w-64 flex-col border-r bg-sidebar">
-      <div className="flex h-16 items-center gap-2 border-b px-6">
-        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
+    <aside className="hidden md:flex w-64 flex-col liquid-glass border-r border-sidebar-border">
+      {/* Logo */}
+      <div className="flex h-16 items-center gap-2.5 border-b border-sidebar-border px-5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm glow-primary">
           <Zap className="h-4 w-4" />
         </div>
-        <span className="font-semibold text-sidebar-foreground">{APP_NAME}</span>
+        <span className="font-bold text-sidebar-foreground tracking-tight">{APP_NAME}</span>
       </div>
 
       <ScrollArea className="flex-1 px-3 py-4">
-        <nav className="space-y-1">
+        <nav className="space-y-0.5">
           {navItems.map(({ href, label, icon: Icon }) => {
             const active = pathname === href || (href !== "/dashboard" && pathname.startsWith(href));
             return (
@@ -43,29 +45,32 @@ export function Sidebar() {
                 key={href}
                 href={href}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                  "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
                   active
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                    ? "bg-primary text-primary-foreground shadow-sm glow-primary"
+                    : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 )}
               >
-                <Icon className="h-4 w-4 shrink-0" />
+                <Icon className={cn("h-4 w-4 shrink-0 transition-transform duration-200", !active && "group-hover:scale-110")} />
                 {label}
+                {active && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary-foreground/60" />}
               </Link>
             );
           })}
         </nav>
       </ScrollArea>
 
-      <div className="border-t p-4">
-        <div className="rounded-lg bg-primary/10 p-3">
-          <p className="text-xs font-medium text-primary">Upgrade to Pro</p>
-          <p className="text-xs text-muted-foreground mt-1">Get 200 generations/month</p>
+      {/* Upgrade card */}
+      <div className="p-4 border-t border-sidebar-border">
+        <div className="liquid-glass rounded-2xl p-4 bg-linear-to-br from-primary/15 to-purple-500/10">
+          <p className="text-xs font-bold text-primary">Upgrade to Pro</p>
+          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">Get 200 generations/month and unlock all features.</p>
           <Link
             href="/pricing"
-            className="mt-2 block text-xs font-semibold text-primary hover:underline"
+            className="mt-3 flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
           >
-            View plans →
+            View plans
+            <ArrowUpRight className="h-3 w-3" />
           </Link>
         </div>
       </div>
