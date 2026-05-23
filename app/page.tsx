@@ -178,14 +178,14 @@ export default function LandingPage() {
         {/* Floating orbs */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div
-            className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full animate-float"
+            className="absolute -top-32 -left-32 h-125 w-125 rounded-full animate-float"
             style={{
               background: "radial-gradient(circle, oklch(0.529 0.194 256.8 / 20%), transparent 70%)",
               animationDelay: "0s",
             }}
           />
           <div
-            className="absolute top-1/3 -right-48 h-[600px] w-[600px] rounded-full animate-float"
+            className="absolute top-1/3 -right-48 h-160 w-160 rounded-full animate-float"
             style={{
               background: "radial-gradient(circle, oklch(0.65 0.18 280 / 15%), transparent 70%)",
               animationDelay: "2s",
