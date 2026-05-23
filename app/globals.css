@@ -78,7 +78,7 @@
     --glass-blur: blur(20px) saturate(180%);
     --mesh-1: oklch(0.75 0.18 256.8 / 30%);
     --mesh-2: oklch(0.72 0.16 300 / 20%);
-    --mesh-3: oklch(0.78 0.14 200 / 20%);
+    --mesh-3: oklch(0.72 0.16 256.8 / 20%);
   }
 
   .dark {
@@ -117,7 +117,7 @@
     --glass-blur: blur(24px) saturate(200%);
     --mesh-1: oklch(0.50 0.20 256.8 / 25%);
     --mesh-2: oklch(0.45 0.18 300 / 18%);
-    --mesh-3: oklch(0.55 0.16 200 / 18%);
+    --mesh-3: oklch(0.55 0.18 256.8 / 18%);
   }
 
   * {
